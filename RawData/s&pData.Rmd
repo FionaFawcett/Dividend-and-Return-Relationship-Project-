@@ -1,0 +1,29 @@
+---
+title: "Data"
+output: html_document
+date: "2025-04-15"
+---
+
+Upload necessary packages
+```{r}
+library(tidyverse)
+library(quantmod)
+library(rvest)
+```
+
+Webscrape updated s&p symbols and make list
+```{r}
+link = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
+page = read_html(link) #gives the html document from the source link
+
+# html_nodes --> pulls out the elements we want to grab
+spsymbol = page %>%  html_nodes("#constituents tr > :nth-child(1)") %>% html_text()
+spsymbol
+
+```
+
+Upload data
+```{r}
+getSymbols("AAPL")
+
+```
