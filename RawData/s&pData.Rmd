@@ -17,13 +17,19 @@ link = "https://en.wikipedia.org/wiki/List_of_S%26P_500_companies"
 page = read_html(link) #gives the html document from the source link
 
 # html_nodes --> pulls out the elements we want to grab
-spsymbol = page %>%  html_nodes("#constituents tr > :nth-child(1)") %>% html_text()
-spsymbol
+# html_text --> makes into text
+spsymbol_unclean1 = page %>%  html_nodes("#constituents tr > :nth-child(1)") %>% html_text()
+# spsymbol_unclean1 <- gives "/n" at the end for paragraph break
+
+spsymbol_unclean2 <- trimws(spsymbol_unclean1) #take out "/n"
+
+spsymbol <- spsymbol_unclean2[-1] # this takes out the header from wikipedia 
+
+spsymbol # final symbols of s&p 500
 
 ```
 
 Upload data
 ```{r}
-getSymbols("AAPL")
 
 ```
