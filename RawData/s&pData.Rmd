@@ -24,12 +24,18 @@ spsymbol_unclean1 = page %>%  html_nodes("#constituents tr > :nth-child(1)") %>%
 spsymbol_unclean2 <- trimws(spsymbol_unclean1) #take out "/n"
 
 spsymbol <- spsymbol_unclean2[-1] # this takes out the header from wikipedia 
+ # final symbols of s&p 500 from wikipedia
 
-spsymbol # final symbols of s&p 500
-
+set.seed(99)
+spsymbol_sample <- sample(spsymbol, size = 40)
+spsymbol_sample # random sample of 40 s&p 500 companies to analyze data 
 ```
 
 Upload data
 ```{r}
+
+for (i in spsymbol_sample) {
+  getSymbols(i, from = "01/01/1900")
+}
 
 ```
