@@ -31,11 +31,40 @@ spsymbol_sample <- sample(spsymbol, size = 40)
 spsymbol_sample # random sample of 40 s&p 500 companies to analyze data 
 ```
 
-Upload data
+Upload dividend and stock price data
 ```{r}
 
 for (i in spsymbol_sample) {
   getSymbols(i, from = "01/01/1900")
+} #gives the stock information
+
+for (i in spsymbol_sample) {
+  div <- getDividends(i, from = "1900-01-01")
+  print(paste("Dividends for", i))
+  print(div)
+} # gives the dividend data
+
+
+for (i in spsymbol_sample) {
+  symbol <- getSymbols(i, from = "01/01/1900")
+  div <- getDividends(i, from = "1900-01-01")
+  merge(symbol, div)
 }
 
+
+merged_data <- list()
+
+for (i in spsymbol_sample) {
+  tryCatch({
+    symbol_data <- getSymbols(i, from = "1900-01-01", auto.assign = FALSE)
+    dividend_data <- getDividends(i, from = "1900-01-01", auto.assign = FALSE)
+    
+    merged_data[[i]] <- merge(symbol_data, dividend_data)
+  }, error = function(e) {
+    message(paste("Failed for", i, ":", e$message))
+    merged_data[[i]] <- NULL
+  })
+}
+
+names(merged_data)
 ```

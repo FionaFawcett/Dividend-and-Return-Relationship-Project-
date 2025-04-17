@@ -1,0 +1,17 @@
+---
+title: "NVDAdata"
+output: html_document
+date: "2025-04-17"
+---
+
+Load libraries
+```{r}
+library(tidyverse)
+library(quantmod)
+library(rvest)
+```
+
+
+```{r}
+
+```
