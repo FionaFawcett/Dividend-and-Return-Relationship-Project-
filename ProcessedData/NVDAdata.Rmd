@@ -13,5 +13,21 @@ library(rvest)
 
 
 ```{r}
+# Draw out dividends and prices
+TMUS_xts <- getSymbols("TMUS", from = "1900-01-01", auto.assign = FALSE)
+divTMUS <- getDividends("TMUS", from = "1900-01-01", auto.assign = FALSE)
 
+# Merge data
+TMUS_merged <- merge(TMUS_xts, divTMUS)
+
+# Make into data frame 
+TMUS_mergedDF <- data.frame(TMUS_merged)
+
+# Add cumulative average price and volatility 
+TMUS_DF <- TMUS_mergedDF %>%
+  mutate(AvPrice = cummean(TMUS.Adjusted)) %>% 
+  mutate(volatility = sapply(1:n(), function(i) sd(TMUS.Adjusted[1:i])))
+
+# voila
+TMUS_DF
 ```
