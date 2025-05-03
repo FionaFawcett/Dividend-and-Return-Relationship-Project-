@@ -20,8 +20,8 @@ divTMUS <- getDividends("TMUS", from = "1900-01-01", auto.assign = FALSE)
 # Merge data
 TMUS_merged <- merge(TMUS_xts, divTMUS)
 
-# Make into data frame 
-TMUS_mergedDF <- data.frame(TMUS_merged)
+# Make into data frame and extracted date index
+TMUS_mergedDF <- data.frame(Date = index(TMUS_merged),coredata(TMUS_merged) )
 
 # Add cumulative average price and volatility 
 TMUS_DF <- TMUS_mergedDF %>%
@@ -30,4 +30,21 @@ TMUS_DF <- TMUS_mergedDF %>%
 
 # voila
 TMUS_DF
+names(TMUS_DF)
 ```
+
+```{r}
+#wanted to make sure no null values
+colSums(is.na(TMUS_mergedDF))
+
+#EDA
+summary(TMUS_mergedDF)
+
+#Converted date column to date class
+TMUS_mergedDF$Date <- as.Date(TMUS_mergedDF$Date)
+
+ggplot(TMUS_mergedDF, aes(x = Date, y = TMUS.Adjusted)) +
+  geom_line(color = "red")
+  labs(titile = "Adjusted Close price", y = "price", x = "date")
+```
+
